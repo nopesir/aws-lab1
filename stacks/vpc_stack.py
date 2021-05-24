@@ -12,7 +12,7 @@ class CdkVpcStack(core.Stack):
 
         # The code that defines your stack goes here
 
-        self.vpc = ec2.Vpc(self, "Wordpress-Wprkshop",
+        self.vpc = ec2.Vpc(self, "Wordpress-workshop",
                            max_azs=3,
                            cidr="192.168.0.0/16",
                            # configuration will create 3 groups in 3 AZs = 9 subnets.
@@ -29,9 +29,9 @@ class CdkVpcStack(core.Stack):
                                name="Data",
                                cidr_mask=24
                            )
-                           ],
-                           # nat_gateway_provider=ec2.NatProvider.gateway(),
-                           nat_gateways=3,
+                           ]
                            )
         core.CfnOutput(self, "Output",
                        value=self.vpc.vpc_id)
+                       
+        

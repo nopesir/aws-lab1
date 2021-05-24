@@ -1,0 +1,855 @@
+{
+  "Resources": {
+    "WordpressworkshopBC7F9BDA": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "192.168.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/Resource"
+      }
+    },
+    "WordpressworkshopPublicSubnet1SubnetA47B0D94": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "192.168.0.0/24",
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet1/Subnet"
+      }
+    },
+    "WordpressworkshopPublicSubnet1RouteTableE89D02A4": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet1/RouteTable"
+      }
+    },
+    "WordpressworkshopPublicSubnet1RouteTableAssociation38BE2E55": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "WordpressworkshopPublicSubnet1RouteTableE89D02A4"
+        },
+        "SubnetId": {
+          "Ref": "WordpressworkshopPublicSubnet1SubnetA47B0D94"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet1/RouteTableAssociation"
+      }
+    },
+    "WordpressworkshopPublicSubnet1DefaultRoute6DE9C5A2": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "WordpressworkshopPublicSubnet1RouteTableE89D02A4"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "WordpressworkshopIGW10EF183D"
+        }
+      },
+      "DependsOn": [
+        "WordpressworkshopVPCGWEB28F2CF"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet1/DefaultRoute"
+      }
+    },
+    "WordpressworkshopPublicSubnet1EIPE91FC147": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet1/EIP"
+      }
+    },
+    "WordpressworkshopPublicSubnet1NATGateway9E8A5049": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "WordpressworkshopPublicSubnet1EIPE91FC147",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "WordpressworkshopPublicSubnet1SubnetA47B0D94"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet1/NATGateway"
+      }
+    },
+    "WordpressworkshopPublicSubnet2Subnet9A9DF7F1": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "192.168.1.0/24",
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/PublicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet2/Subnet"
+      }
+    },
+    "WordpressworkshopPublicSubnet2RouteTable277D0F80": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/PublicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet2/RouteTable"
+      }
+    },
+    "WordpressworkshopPublicSubnet2RouteTableAssociation930D1601": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "WordpressworkshopPublicSubnet2RouteTable277D0F80"
+        },
+        "SubnetId": {
+          "Ref": "WordpressworkshopPublicSubnet2Subnet9A9DF7F1"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet2/RouteTableAssociation"
+      }
+    },
+    "WordpressworkshopPublicSubnet2DefaultRoute7AA29E6A": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "WordpressworkshopPublicSubnet2RouteTable277D0F80"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "WordpressworkshopIGW10EF183D"
+        }
+      },
+      "DependsOn": [
+        "WordpressworkshopVPCGWEB28F2CF"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet2/DefaultRoute"
+      }
+    },
+    "WordpressworkshopPublicSubnet2EIP1B5EEC60": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/PublicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet2/EIP"
+      }
+    },
+    "WordpressworkshopPublicSubnet2NATGateway227ECFEC": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "WordpressworkshopPublicSubnet2EIP1B5EEC60",
+            "AllocationId"
+          ]
+        },
+        "SubnetId": {
+          "Ref": "WordpressworkshopPublicSubnet2Subnet9A9DF7F1"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/PublicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/PublicSubnet2/NATGateway"
+      }
+    },
+    "WordpressworkshopAppSubnet1Subnet7190B659": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "192.168.2.0/24",
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "App"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/AppSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/AppSubnet1/Subnet"
+      }
+    },
+    "WordpressworkshopAppSubnet1RouteTable3977ED1D": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/AppSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/AppSubnet1/RouteTable"
+      }
+    },
+    "WordpressworkshopAppSubnet1RouteTableAssociation3682CAD8": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "WordpressworkshopAppSubnet1RouteTable3977ED1D"
+        },
+        "SubnetId": {
+          "Ref": "WordpressworkshopAppSubnet1Subnet7190B659"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/AppSubnet1/RouteTableAssociation"
+      }
+    },
+    "WordpressworkshopAppSubnet1DefaultRouteD2AFD30E": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "WordpressworkshopAppSubnet1RouteTable3977ED1D"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "WordpressworkshopPublicSubnet1NATGateway9E8A5049"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/AppSubnet1/DefaultRoute"
+      }
+    },
+    "WordpressworkshopAppSubnet2Subnet56D38F6E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "192.168.3.0/24",
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "App"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/AppSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/AppSubnet2/Subnet"
+      }
+    },
+    "WordpressworkshopAppSubnet2RouteTable13FE1CE5": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/AppSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/AppSubnet2/RouteTable"
+      }
+    },
+    "WordpressworkshopAppSubnet2RouteTableAssociation96865CCA": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "WordpressworkshopAppSubnet2RouteTable13FE1CE5"
+        },
+        "SubnetId": {
+          "Ref": "WordpressworkshopAppSubnet2Subnet56D38F6E"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/AppSubnet2/RouteTableAssociation"
+      }
+    },
+    "WordpressworkshopAppSubnet2DefaultRouteA34694E0": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "WordpressworkshopAppSubnet2RouteTable13FE1CE5"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "WordpressworkshopPublicSubnet2NATGateway227ECFEC"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/AppSubnet2/DefaultRoute"
+      }
+    },
+    "WordpressworkshopDataSubnet1SubnetCCB339AD": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "192.168.4.0/24",
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Data"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/DataSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/DataSubnet1/Subnet"
+      }
+    },
+    "WordpressworkshopDataSubnet1RouteTable0AF7E48F": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/DataSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/DataSubnet1/RouteTable"
+      }
+    },
+    "WordpressworkshopDataSubnet1RouteTableAssociation66696876": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "WordpressworkshopDataSubnet1RouteTable0AF7E48F"
+        },
+        "SubnetId": {
+          "Ref": "WordpressworkshopDataSubnet1SubnetCCB339AD"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/DataSubnet1/RouteTableAssociation"
+      }
+    },
+    "WordpressworkshopDataSubnet2Subnet3E17EBDE": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "192.168.5.0/24",
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Data"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/DataSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/DataSubnet2/Subnet"
+      }
+    },
+    "WordpressworkshopDataSubnet2RouteTableAB562020": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop/DataSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/DataSubnet2/RouteTable"
+      }
+    },
+    "WordpressworkshopDataSubnet2RouteTableAssociation6B2ABE64": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "WordpressworkshopDataSubnet2RouteTableAB562020"
+        },
+        "SubnetId": {
+          "Ref": "WordpressworkshopDataSubnet2Subnet3E17EBDE"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/DataSubnet2/RouteTableAssociation"
+      }
+    },
+    "WordpressworkshopIGW10EF183D": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "cdk-vpc/Wordpress-workshop"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/IGW"
+      }
+    },
+    "WordpressworkshopVPCGWEB28F2CF": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "WordpressworkshopBC7F9BDA"
+        },
+        "InternetGatewayId": {
+          "Ref": "WordpressworkshopIGW10EF183D"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/Wordpress-workshop/VPCGW"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAA01PywrCMBD8Fu8x9YGIN6WI9KKhivd0XXF9JCXZWKT032181dPMzswOu0M5HEzkoDfXle/D4ZLUYB3KessaLiJHb4MDFOnRbAKXgUVqjWcXgKP277fGgZisaUTsQhjJel9CtPYqFSoUV4JtKAy+VjuW28C408UVO73TFt5bIB2Lf+FIlpmKsNa80oyVfgjl6N7SrjgzjK7l38D7ks+04PbD0w0NN41QDz5Zk4zlVM56Z0/Ud8Ew3VDmb3wCTwlwACcBAAA="
+      },
+      "Metadata": {
+        "aws:cdk:path": "cdk-vpc/CDKMetadata/Default"
+      },
+      "Condition": "CDKMetadataAvailable"
+    }
+  },
+  "Outputs": {
+    "Output": {
+      "Value": {
+        "Ref": "WordpressworkshopBC7F9BDA"
+      }
+    },
+    "ExportsOutputRefWordpressworkshopBC7F9BDAE104F6E0": {
+      "Value": {
+        "Ref": "WordpressworkshopBC7F9BDA"
+      },
+      "Export": {
+        "Name": "cdk-vpc:ExportsOutputRefWordpressworkshopBC7F9BDAE104F6E0"
+      }
+    },
+    "ExportsOutputRefWordpressworkshopPublicSubnet1SubnetA47B0D942C24CA14": {
+      "Value": {
+        "Ref": "WordpressworkshopPublicSubnet1SubnetA47B0D94"
+      },
+      "Export": {
+        "Name": "cdk-vpc:ExportsOutputRefWordpressworkshopPublicSubnet1SubnetA47B0D942C24CA14"
+      }
+    },
+    "ExportsOutputRefWordpressworkshopPublicSubnet2Subnet9A9DF7F16257CF59": {
+      "Value": {
+        "Ref": "WordpressworkshopPublicSubnet2Subnet9A9DF7F1"
+      },
+      "Export": {
+        "Name": "cdk-vpc:ExportsOutputRefWordpressworkshopPublicSubnet2Subnet9A9DF7F16257CF59"
+      }
+    },
+    "ExportsOutputRefWordpressworkshopAppSubnet1Subnet7190B65900E5A3A8": {
+      "Value": {
+        "Ref": "WordpressworkshopAppSubnet1Subnet7190B659"
+      },
+      "Export": {
+        "Name": "cdk-vpc:ExportsOutputRefWordpressworkshopAppSubnet1Subnet7190B65900E5A3A8"
+      }
+    },
+    "ExportsOutputRefWordpressworkshopAppSubnet2Subnet56D38F6ED4EDD3CB": {
+      "Value": {
+        "Ref": "WordpressworkshopAppSubnet2Subnet56D38F6E"
+      },
+      "Export": {
+        "Name": "cdk-vpc:ExportsOutputRefWordpressworkshopAppSubnet2Subnet56D38F6ED4EDD3CB"
+      }
+    },
+    "ExportsOutputRefWordpressworkshopDataSubnet1SubnetCCB339AD93A581C2": {
+      "Value": {
+        "Ref": "WordpressworkshopDataSubnet1SubnetCCB339AD"
+      },
+      "Export": {
+        "Name": "cdk-vpc:ExportsOutputRefWordpressworkshopDataSubnet1SubnetCCB339AD93A581C2"
+      }
+    },
+    "ExportsOutputRefWordpressworkshopDataSubnet2Subnet3E17EBDE78701968": {
+      "Value": {
+        "Ref": "WordpressworkshopDataSubnet2Subnet3E17EBDE"
+      },
+      "Export": {
+        "Name": "cdk-vpc:ExportsOutputRefWordpressworkshopDataSubnet2Subnet3E17EBDE78701968"
+      }
+    }
+  },
+  "Conditions": {
+    "CDKMetadataAvailable": {
+      "Fn::Or": [
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "af-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ca-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-northwest-1"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-3"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "me-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "sa-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-2"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-2"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
