@@ -1,0 +1,4 @@
+.c9/
+.venv/
+stacks/__pycache__/
+stacks/LAB1_Master.egg-info/*
